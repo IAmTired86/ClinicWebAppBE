@@ -2,15 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Models
 {
-    public class Doctor
+    public class Doctor : IdentityUser
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Specialty { get; set; }
-        public string PhoneNumber { get; set; }
-        
+        public string Name { get; set; } = string.Empty;
+        public string Specialaztion{ get; set; } = string.Empty;
     }
 }
