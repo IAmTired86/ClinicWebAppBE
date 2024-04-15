@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,8 @@ namespace api.Controller
         [HttpGet]
         public IActionResult GetAll()
         {
-            var doctors = _context.Doctors.ToList();
+            var doctors = _context.Doctors.ToList()
+             .Select(s => s.ToDoctorDTO());
 
             return Ok(doctors);
         }
@@ -40,7 +42,7 @@ namespace api.Controller
                 return NotFound();
             }
 
-            return Ok(doctor);
+            return Ok(doctor.ToDoctorDTO());
         }
     }    
 }
