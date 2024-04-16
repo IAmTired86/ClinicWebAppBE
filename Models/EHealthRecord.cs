@@ -7,7 +7,7 @@ namespace api.Models
 {
     public class EHealthRecord
     {
-        public int RecordId { get; set; }
+        public int Id { get; set; }
         public int PatientId { get; set; } 
         public string Name { get; set; } = string.Empty;
         public string DOB { get; set; } = string.Empty;
