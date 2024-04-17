@@ -27,5 +27,22 @@ namespace api.Mappers
             };
 
         }
+
+        public static EHealthRecord ToEHealthRecordFromCreateDTO(this CreateEHRDTO EHRDTO)
+        {
+            return new EHealthRecord
+            {
+                PatientId = EHRDTO.PatientId,
+                Name = EHRDTO.Name,
+                DOB = EHRDTO.DOB,
+                History = EHRDTO.History,
+                Diagnosis = EHRDTO.Diagnosis,
+                Medication = EHRDTO.Medication,
+                Treatment = EHRDTO.Treatment,
+                Instruction = EHRDTO.Instruction,
+                Allergies = EHRDTO.Allergies,
+                Notes = EHRDTO.Notes
+            };
+        }
     }
 }
