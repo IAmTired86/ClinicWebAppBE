@@ -6,6 +6,7 @@ using api.Data;
 using Microsoft.AspNetCore.Mvc;
 using api.Mappers;
 using api.DTO.EHR;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controller
 {
@@ -21,17 +22,18 @@ namespace api.Controller
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var ehrs = _context.EHealthRecords.ToList().Select(e => e.ToEHRDTO());
+            var ehrs = await _context.EHealthRecords.ToListAsync();
+            var ehrDTO = ehrs.Select(ehr => ehr.ToEHRDTO());
             return Ok(ehrs);
         }
 
         [HttpGet("{id}")]
 
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var ehr = _context.EHealthRecords.Find(id);
+            var ehr = await _context.EHealthRecords.FindAsync(id);
 
             if (ehr == null)
             {
@@ -43,21 +45,21 @@ namespace api.Controller
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateEHRDTO EHRDTO)
+        public async Task<IActionResult> Create([FromBody] CreateEHRDTO EHRDTO)
         {
             var ehr = EHRDTO.ToEHealthRecordFromCreateDTO();
             ehr.CreatedOn = DateTime.Now;
-            _context.EHealthRecords.Add(ehr);
-            _context.SaveChanges();
+            await _context.EHealthRecords.AddAsync(ehr);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = ehr.Id }, ehr.ToEHRDTO());
         }
 
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateEHRDTO EHRDTO)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEHRDTO EHRDTO)
         {
-            var ehr = _context.EHealthRecords.Find(id);
+            var ehr = await _context.EHealthRecords.FindAsync(id);
 
             if (ehr == null)
             {
@@ -75,24 +77,24 @@ namespace api.Controller
             ehr.Notes = EHRDTO.Notes;
 
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok(ehr.ToEHRDTO());
         }
         
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var ehr = _context.EHealthRecords.Find(id);
+            var ehr = await _context.EHealthRecords.FindAsync(id);
 
-            if (ehr == null)
+            if (ehr == null)    
             {
                 return NotFound();
             }
 
             _context.EHealthRecords.Remove(ehr);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
