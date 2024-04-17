@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using Microsoft.AspNetCore.Mvc;
+using api.Mappers;
 
 namespace api.Controller
 {
@@ -21,7 +22,7 @@ namespace api.Controller
         [HttpGet]
         public IActionResult GetAll()
         {
-            var ehrs = _context.EHealthRecords.ToList();
+            var ehrs = _context.EHealthRecords.ToList().Select(e => e.ToEHRDTO());
             return Ok(ehrs);
         }
 
@@ -36,7 +37,7 @@ namespace api.Controller
                 return NotFound();
             }
 
-            return Ok(ehr);
+            return Ok(ehr.ToEHRDTO());
         }
     }
 }
