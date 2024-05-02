@@ -18,6 +18,18 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 
 var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseCors(builder => builder
+    .WithOrigins("http://localhost:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()); // Add this line
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
