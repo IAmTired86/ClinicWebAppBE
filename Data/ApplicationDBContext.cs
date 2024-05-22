@@ -17,5 +17,12 @@ namespace api.Data
 
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<EHealthRecord> EHealthRecords { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<EHealthRecord>()
+            .Property(e => e.PatientId)
+            .ValueGeneratedOnAdd();
+    }
     }
 }
